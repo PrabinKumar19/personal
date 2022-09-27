@@ -1,57 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import "./App.css";
 
 function App() {
+  const Dashboard = lazy(() => import("./components/Dashboard"));
+  const Calendar = lazy(() => import("./components/Calendar"));
+  const Expenses = lazy(() => import("./components/Expenses"));
+  const ToDoList = lazy(() => import("./components/ToDoList"));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <Router>
+      <div className="app">
+        <Sidebar />
+        <div className="app-body">
+          <Header />
+          <Suspense fallback={<>Loading...</>}>
+            <Routes>
+              <Route path="/" exact element={<Dashboard />} />
+              <Route path="/calendar" exact element={<Calendar />} />
+              <Route path="/expenses" exact element={<Expenses />} />
+              <Route path="/todolist" exact element={<ToDoList />} />
+            </Routes>
+          </Suspense>
+        </div>
+        {/* App Body */}
+      </div>
+    </Router>
   );
 }
 
