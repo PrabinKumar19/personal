@@ -9,8 +9,6 @@ function SidebarOption({ Icon, title, path }) {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
 
-  console.log(routeName);
-
   return routeName === path ? (
     <SidebarOptionMainActive>
       {<Icon />}
