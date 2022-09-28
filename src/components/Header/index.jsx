@@ -1,11 +1,14 @@
-import { Avatar } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import RouteIcon from "@mui/icons-material/Route";
 import styled from "styled-components";
 import { selectRouteName } from "../../features/routerSlice";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Avatar } from "@mui/material";
+import { auth } from "../../firebase";
 
 function Header() {
+  const [user] = useAuthState(auth);
   const routeName = useSelector(selectRouteName);
   const checkPathName = () =>
     [
@@ -22,7 +25,11 @@ function Header() {
         <p>{checkPathName()}</p>
       </HeaderLeft>
       <HeaderRight>
-        <Avatar />
+        <HeaderAvatar
+          src={user?.photoURL}
+          alt={user?.displayName}
+          onClick={() => auth.signOut()}
+        />
       </HeaderRight>
     </HeaderMain>
   );
@@ -48,3 +55,11 @@ const HeaderLeft = styled.div`
 `;
 
 const HeaderRight = styled.div``;
+
+const HeaderAvatar = styled(Avatar)`
+  cursor: pointer;
+
+  :hover {
+    opacity: 0.8;
+  }
+`;
